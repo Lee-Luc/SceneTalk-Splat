@@ -1,0 +1,75 @@
+#配置文件
+
+# 项目路径配置
+paths:
+  # 输入数据路径
+  source_path: "your_data"  # COLMAP数据集路径
+  model_path: "your_result"  # 训练好的3DGS模型路径
+  
+  # 输出路径
+  output_root: "output/your_data_analysis"  # 总输出目录
+  
+# YOLO检测配置
+yolo:
+  model_name: "s-yolov8.pt" # 模型
+  conf_threshold: 0.30      # 置信度阈值（降低以检测更多物体）
+  iou_threshold: 0.90       # NMS IoU阈值
+  device: "cuda"            # 设备: cuda 或 cpu
+  classes: null             # 检测类别过滤，null表示检测所有类别
+  img_size: 1280            # 输入图像尺寸（更大的尺寸可检测更多小物体）
+  agnostic_nms: false       # 是否使用类别无关的NMS
+  max_det: 300              # 最大检测数量
+  
+# 3D高斯渲染配置
+gaussian:
+  sh_degree: 3              # 球谐函数阶数
+  white_background: false   # 是否使用白色背景
+  load_iteration: -1        # 加载的迭代次数，-1表示最新
+  
+# 投影配置
+projection:
+  depth_sample_step: 10     # 深度采样步长（像素）
+  min_visible_points: 4     # 最小可见点数
+  visibility_threshold: 0.3 # 可见性阈值
+  use_gaussian_depth: true  # 是否使用高斯深度图
+  
+# LLM配置
+llm:
+  enable_llm: true           # 是否启用LLM功能
+  provider: "deepseek"       # 提供商: openai, deepseek, anthropic
+  model: "deepseek-chat"     # 模型名称 (deepseek-chat, gpt-4-turbo, gpt-3.5-turbo)
+  api_key: "your_API-KEY"    # API密钥 (填入你的DeepSeek或OpenAI Key)
+  base_url: "URL"            # API基础URL
+  temperature: 0.7           # 温度参数 (0.0-1.0, 越高越有创造性)
+  max_tokens: 2000           # 最大token数
+  
+# 可视化配置
+visualization:
+  image_format: "png"       # 输出图像格式
+  dpi: 150                  # 图像DPI
+  bbox_thickness: 2         # 检测框线宽
+  font_scale: 0.6           # 字体大小
+  create_comparison: true   # 是否生成对比图
+  create_video: false       # 是否生成视频
+  
+# 场景理解配置
+scene_understanding:
+  distance_threshold: 2.0   # 空间关系距离阈值（米）
+  min_object_size: 0.1      # 最小物体尺寸（米）
+  spatial_relations:        # 需要计算的空间关系
+    - "on"
+    - "under"
+    - "near"
+    - "left"
+    - "right"
+    - "front"
+    - "back"
+    
+# 实验配置
+experiment:
+  save_intermediate: true   # 是否保存中间结果
+  compute_metrics: true     # 是否计算评估指标
+  num_novel_views: 10       # 生成的新视角数量
+  skip_train_views: false   # 是否跳过训练视角
+  skip_test_views: false    # 是否跳过测试视角
+
